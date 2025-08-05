@@ -1,8 +1,18 @@
+# version: 0.0
+# resources:
+#   - MyLambdaFunction:
+#       type: "AWS::Lambda::Function"
+#       properties:
+#         name: my-lambda-function
+#         alias: v1
+#         currentversion: 1
+
 version: 0.0
-resources:
+Resources:
   - MyLambdaFunction:
-      type: "AWS::Lambda::Function"
-      properties:
-        name: my-lambda-function
-        alias: v1
-        currentversion: 1
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "my-lambda-function"
+        Alias: "V1"
+        CurrentVersion: "1"
+        
