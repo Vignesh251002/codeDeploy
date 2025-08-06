@@ -1,0 +1,11 @@
+version:
+Resources:
+  - myLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "codeDeployLambda"
+        Alias: "live"
+        CurrentVersion: "8"
+        TargetVersion: "7"
+
+        
