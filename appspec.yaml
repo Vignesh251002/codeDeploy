@@ -5,7 +5,7 @@ Resources:
       Properties:
         Name: "codeDeployLambda"
         Alias: "live"
-        CurrentVersion: "7"
-        TargetVersion: "8"
+        CurrentVersion: "8"
+        TargetVersion: "9"
 
         
