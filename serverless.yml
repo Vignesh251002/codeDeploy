@@ -53,7 +53,7 @@ package:
   individually: true
   excludeDevDependencies: true
   patterns:
-    - "!src/**"
+    - "src/**"
 
 layers:
   LambdaDependencies:
