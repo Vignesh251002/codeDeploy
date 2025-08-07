@@ -1,0 +1,173 @@
+service: finops-backend
+
+frameworkVersion: '3'
+configValidationMode: error
+
+provider:
+  name: aws
+  stackName: ${${param:APPLICATION_ENV}-coreService-backend-stack
+  stackTags:
+    STAGE: ${param:APPLICATION_ENV}
+    Project: "finopsreport"
+    Subproject: "backend"
+  runtime: nodejs20.x
+  stage: ${opt:stage, 'dev'}
+  region: ${param:REGION}
+  deploymentBucket:
+    name: ${param:DEPLOYMENT_BUCKET}
+  environment:
+    APPLICATION_ENV: ${param:APPLICATION_ENV}
+    REGION: ${param:REGION}
+  layers:
+    - { Ref: LambdaDependenciesLambdaLayer } 
+  apiGateway:
+    binaryMediaTypes:
+      - "image/*"
+      - "application/pdf"
+      - "application/msword"
+      - "multipart/form-data"   
+  iam:
+    role:
+      name: ${param:APPLICATION_ENV}-coreService-backend-role
+      statements:
+        - Effect: Allow
+          Action:
+            - iam:*
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - KMS:Decrypt
+            - KMS:Encrypt
+            - KMS:CreateKey
+            - KMS:createAlias
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "secretsmanager:GetSecretValue"
+            - "secretsmanager:DescribeSecret"
+            - "secretsmanager:ListSecretVersionIds"
+            - "secretsmanager:ListSecrets"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "ses:*"
+            - "sns:*"
+            - "mobiletargeting:*"
+            - "sqs:SendMessage"
+            - "athena:*"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "cognito-identity:*"
+            - "cognito-idp:*"
+          Resource: "*" 
+        - Effect: Allow
+          Action: s3:GetObject
+          Resource: arn:aws:s3:::finops-development-cost-report-bucket-140857882741/*
+        - Effect: Allow
+          Action:
+            - s3:PutObject
+            - s3:GetObject
+            - s3:ListBucket
+            - s3:GetBucketLocation
+          Resource:
+            - arn:aws:s3:::finops-connection-test-bucket 
+            - arn:aws:s3:::finops-connection-test-bucket/*
+        - Effect: Allow
+          Action:
+            - sts:AssumeRole
+          Resource: "*"   
+
+  tags:
+    Project_name: finOps
+    Created_for: finOps-backend-resource
+    Created_by: finOps-team
+
+custom:
+  envfile: ${file(./env/dev-env.yml)}
+  prefix: ${param:APPLICATION_ENV}
+  export-env:
+    enableOffline: true
+  serverless-offline:
+    host: localhost
+    httpPort: 5000
+    lambdaPort: 6000
+  logRetentionInDays: ${self:custom.envfile.DEFAULT_LAMBDA_LOG_RETENTION_IN_DAYS, 90}
+
+package:
+  individually: true
+  excludeDevDependencies: true
+  patterns:
+    - "!src/**"
+    - "!env/**"
+    - "!layers/**"
+    - "!node_modules/**"
+    - "!package-lock.json"
+    - "!package.json"
+    - "!postman/**"
+    - "!README.md"
+    - "!serverless.yml"    
+  
+layers:
+  LambdaDependencies:
+    path: layers/
+    name: finopsreport-${param:APPLICATION_ENV}-LambdaDependencies
+    description: Lambda dependencies for finops app Lambda Functions
+    compatibleRuntimes:
+      - nodejs20.x
+    compatibleArchitectures:
+      - x86_64
+    licenseInfo: GPLv3
+    retain: false   
+    
+functions:
+  codeDeploylambda1:
+    name: ${param:APPLICATION_ENV}-codedeploy-lambda1
+    handler: src/index1.handler
+    package: 
+      patterns:
+        - src/workspace/**
+    timeout: 30
+    events:
+      - http:
+          path: /trigger/lambda1/
+          method: POST
+          # authorizer:
+          #   type: COGNITO_USER_POOLS
+          #   authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true   
+
+  codeDeploylambda2:
+    name: ${param:APPLICATION_ENV}-codedeploy-lambda2
+    handler: src/index2.handler
+    package: 
+      patterns:
+        - src/workspace/**
+    timeout: 30
+    events:
+      - http:
+          path: /trigger/lambda2/
+          method: get
+          # authorizer:
+          #   type: COGNITO_USER_POOLS
+          #   authorizerId: !Ref ApiGatewayAuthorizer
+          cors: true 
+
+plugins:
+  - serverless-aws-alias
+  - serverless-offline
+
+# resources:
+#   Resources:   
+#     ApiGatewayAuthorizer:
+#       DependsOn:
+#         - ApiGatewayRestApi
+#       Type: AWS::ApiGateway::Authorizer
+#       Properties:
+#         Name: !Sub ${self:custom.prefix}-${param:APPLICATION_ENV}-cognito-authorizer
+#         IdentitySource: method.request.header.Authorization
+#         RestApiId:
+#           Ref: ApiGatewayRestApi
+#         Type: COGNITO_USER_POOLS
+#         ProviderARNs:
+#           - ${param:COGNITO_ARN}  
