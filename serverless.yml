@@ -1,6 +1,6 @@
 service: finops-backend
 
-frameworkVersion: '3'
+frameworkVersion: '2'
 configValidationMode: error
 
 provider:
