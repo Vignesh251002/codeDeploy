@@ -55,11 +55,6 @@ package:
   patterns:
     - "!src/**"
     - "!env/**"
-    - "!layers/**"
-    - "!node_modules/**"
-    - "!package-lock.json"
-    - "!package.json"
-    - "!postman/**"
     - "!README.md"
     - "!serverless.yml"
 
