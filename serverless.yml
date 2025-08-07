@@ -1,6 +1,6 @@
 service: finops-backend
 
-frameworkVersion: '2'
+frameworkVersion: '3'
 configValidationMode: error
 
 provider:
@@ -124,6 +124,8 @@ functions:
   codeDeploylambda1:
     name: ${param:APPLICATION_ENV}-codedeploy-lambda1
     handler: src/index1.handler
+    versionFunctions: true
+    alias: live
     package: 
       patterns:
         - src/workspace/**
@@ -140,6 +142,8 @@ functions:
   codeDeploylambda2:
     name: ${param:APPLICATION_ENV}-codedeploy-lambda2
     handler: src/index2.handler
+    versionFunctions: true
+    alias: live
     package: 
       patterns:
         - src/workspace/**
