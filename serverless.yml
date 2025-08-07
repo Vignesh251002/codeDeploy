@@ -157,8 +157,7 @@ functions:
           #   authorizerId: !Ref ApiGatewayAuthorizer
           cors: true 
 
-plugins:
-  - serverless-aws-alias
+
 
 # resources:
 #   Resources:   
