@@ -52,11 +52,7 @@ custom:
 package:
   individually: true
   excludeDevDependencies: true
-  patterns:
-    - "!src/**"
-    - "!env/**"
-    - "!README.md"
-    - "!serverless.yml"
+
 
 layers:
   LambdaDependencies:
@@ -76,7 +72,7 @@ functions:
     handler: src/index1.handler
     package:
       patterns:
-        - src/**
+        - src/index1.mjs
     timeout: 30
     events:
       - http:
@@ -89,7 +85,7 @@ functions:
     handler: src/index2.handler
     package:
       patterns:
-        - src/**
+        - src/index2.mjs
     timeout: 30
     events:
       - http:
