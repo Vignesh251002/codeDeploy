@@ -27,7 +27,6 @@ provider:
       - "application/msword"
       - "multipart/form-data"
   versionFunctions: true   # Enable versioning globally (correct place)
-  alias: live              # Alias applied globally (correct place)
   iam:
     role:
       name: ${param:APPLICATION_ENV}-coreService-backend-role
