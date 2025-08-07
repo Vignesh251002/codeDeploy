@@ -1,11 +1,10 @@
 service: finops-backend
-
 frameworkVersion: '3'
 configValidationMode: error
 
 provider:
   name: aws
-  stackName: ${param:APPLICATION_ENV}-coreService-backend-stack  # Corrected syntax
+  stackName: ${param:APPLICATION_ENV}-coreService-backend-stack
   stackTags:
     STAGE: ${param:APPLICATION_ENV}
     Project: "finopsreport"
@@ -26,13 +25,26 @@ provider:
       - "application/pdf"
       - "application/msword"
       - "multipart/form-data"
-  versionFunctions: true   # Enable versioning globally (correct place)
+  versionFunctions: true
   iam:
     role:
       name: ${param:APPLICATION_ENV}-coreService-backend-role
       statements:
-        # Your IAM statements as provided ...
-
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs:*:*:*"
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource: "arn:aws:s3:::your-bucket-name/*"
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+          Resource: "*"
   tags:
     Project_name: finOps
     Created_for: finOps-backend-resource
@@ -53,7 +65,10 @@ package:
   individually: true
   excludeDevDependencies: true
   patterns:
-    - "src/**"
+    - "!node_modules/**"  # Exclude node_modules globally
+    - "!.gitignore"
+    - "!*.md"
+    - "src/**"  # Include src directory globally
 
 layers:
   LambdaDependencies:
@@ -73,7 +88,7 @@ functions:
     handler: src/index1.handler
     package:
       patterns:
-        - src/**
+        - "src/index1.js"  # Explicitly include the handler
     timeout: 30
     events:
       - http:
@@ -86,7 +101,7 @@ functions:
     handler: src/index2.handler
     package:
       patterns:
-        - src/**
+        - "src/index2.js"  # Explicitly include the handler
     timeout: 30
     events:
       - http:
