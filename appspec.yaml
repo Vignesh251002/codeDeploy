@@ -6,6 +6,6 @@ Resources:
         Name: "codeDeployLambda"
         Alias: "live"
         CurrentVersion: "8"
-     
+        TargetVersion: "REPLACE_ME"
 
         
