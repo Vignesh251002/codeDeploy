@@ -155,7 +155,6 @@ functions:
 
 plugins:
   - serverless-aws-alias
-  - serverless-offline
 
 # resources:
 #   Resources:   
