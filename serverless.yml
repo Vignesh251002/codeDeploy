@@ -17,8 +17,8 @@ provider:
   environment:
     APPLICATION_ENV: ${param:APPLICATION_ENV}
     REGION: ${param:REGION}
-  layers:
-    - { Ref: LambdaDependenciesLambdaLayer }
+  # layers:
+  #   - { Ref: LambdaDependenciesLambdaLayer }
   apiGateway:
     binaryMediaTypes:
       - "image/*"
@@ -70,17 +70,17 @@ package:
     - "!*.md"
     - "src/**"  # Include src directory globally
 
-layers:
-  LambdaDependencies:
-    path: layers/
-    name: finopsreport-${param:APPLICATION_ENV}-LambdaDependencies
-    description: Lambda dependencies for finops app Lambda Functions
-    compatibleRuntimes:
-      - nodejs20.x
-    compatibleArchitectures:
-      - x86_64
-    licenseInfo: GPLv3
-    retain: false
+# layers:
+#   LambdaDependencies:
+#     path: layers/
+#     name: finopsreport-${param:APPLICATION_ENV}-LambdaDependencies
+#     description: Lambda dependencies for finops app Lambda Functions
+#     compatibleRuntimes:
+#       - nodejs20.x
+#     compatibleArchitectures:
+#       - x86_64
+#     licenseInfo: GPLv3
+#     retain: false
 
 functions:
   codeDeploylambda1:
