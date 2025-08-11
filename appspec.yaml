@@ -5,7 +5,7 @@ Resources:
       Properties:
         Name: "codedeploy-codedeploy-lambda1"
         Alias: "dev"
-        CurrentVersion: 3
-        TargetVersion: 2
+        CurrentVersion: "3"
+        TargetVersion: "2"
 
 
