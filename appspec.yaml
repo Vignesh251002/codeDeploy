@@ -1,11 +1,18 @@
 version:
 Resources:
-  - myLambdaFunction:
+  - myLambdaFunction1:
       Type: AWS::Lambda::Function
       Properties:
-        Name: "codeDeployLambda"
-        Alias: "live"
-        CurrentVersion: "CURRENT_VERSION"
-        TargetVersion: "TARGET_VERSION"
+        Name: "codedeploy-codedeploy-lambda1"
+        Alias: "dev"
+        CurrentVersion: "3"
+        TargetVersion: "2"
 
+  - myLambdaFunction2:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "codedeploy-codedeploy-lambda2"
+        Alias: "dev"
+        CurrentVersion: "3"
+        TargetVersion: "2"
         
