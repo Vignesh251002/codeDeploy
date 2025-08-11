@@ -90,6 +90,9 @@ functions:
       patterns:
         - "src/index1.js"  # Explicitly include the handler
     timeout: 30
+    aliases:
+      - name: live
+        description: "Live alias for codeDeploylambda1"
     events:
       - http:
           path: /trigger/lambda1/
@@ -103,6 +106,9 @@ functions:
       patterns:
         - "src/index2.js"  # Explicitly include the handler
     timeout: 30
+    aliases:
+      - name: live
+        description: "Live alias for codeDeploylambda2"
     events:
       - http:
           path: /trigger/lambda2/
