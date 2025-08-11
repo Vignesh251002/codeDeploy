@@ -8,10 +8,4 @@ Resources:
         CurrentVersion: 3
         TargetVersion: 2
 
-  - myLambdaFunction2:
-      Type: AWS::Lambda::Function
-      Properties:
-        Name: "codedeploy-codedeploy-lambda2"
-        Alias: "dev"
-        CurrentVersion: 3
-        TargetVersion: 2
+
