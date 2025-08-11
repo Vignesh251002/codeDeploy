@@ -108,3 +108,5 @@ functions:
           path: /trigger/lambda2/
           method: get
           cors: true
+
+
