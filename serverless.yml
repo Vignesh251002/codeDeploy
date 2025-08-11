@@ -109,5 +109,4 @@ functions:
           method: get
           cors: true
 
-plugins:
-  - serverless-aws-alias
+
